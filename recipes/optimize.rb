@@ -42,10 +42,12 @@ if (node['mysql']['perform_optimization'])
     EOH
   end
   
-  bash 'force_mysql_start' do
-    code "echo 'Forced start of MySQL in order to pick up new config changes.'"
-    notifies :start, resources(:service => "mysql"), :immediately
-  end
+  execute "service mysql start"
+  
+  #bash 'force_mysql_start' do
+  #  code "echo 'Forced start of MySQL in order to pick up new config changes.'"
+  #  notifies :start, resources(:service => "mysql"), :immediately
+  #end
   
 else
   ::Chef::Log.info("No additional mysql performance optimization will be performed since node['mysql']['perform_optimization'] is false.")
