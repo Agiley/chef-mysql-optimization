@@ -30,7 +30,7 @@ if (node['mysql']['perform_optimization'])
     owner "root" unless platform? 'windows'
     group node['mysql']['root_group'] unless platform? 'windows'
     mode "0644"
-    notifies :start, resources(:service => "mysql"), :delayed
+    notifies :start, resources(:service => "mysql"), :immediately
   end
   
 else
