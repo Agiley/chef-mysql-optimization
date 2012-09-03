@@ -15,9 +15,12 @@ module Mysql
       elsif (system_type.eql?(:shared))                       
         multiples['innodb_buffer_pool_size']            =     0.25
       end                                                     
-                                                              
+      
+      multiples['innodb_additional_mem_pool_size']      =     0.125
+                                            
       multiples['query_cache_size']                     =     0.25
       multiples['query_cache_limit']                    =     0.125
+      
       multiples['tmp_table_size']                       =     0.125
       multiples['key_buffer_size']                      =     0.03125
       multiples['read_buffer_size']                     =     0.0625
@@ -25,11 +28,6 @@ module Mysql
       multiples['sort_buffer_size']                     =     0.03125
       multiples['join_buffer_size']                     =     0.03125
       multiples['bulk_insert_buffer_size']              =     0.03125
-                                                              
-      multiples['myisam_sort_buffer_size']              =     0.0625
-      multiples['myisam_max_sort_file_size']            =     0.0625
-                                                              
-      multiples['innodb_additional_mem_pool_size']      =     0.125
       
       if (memory && memory > 0)
         multiples.each do |key, multiple|
