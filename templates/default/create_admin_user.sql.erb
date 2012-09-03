@@ -1,0 +1,2 @@
+CREATE USER '<%= node[:mysql][:admin_user][:username] %>'@'%' IDENTIFIED BY '<%= node[:mysql][:admin_user][:password] %>';
+GRANT ALL PRIVILEGES ON *.* TO '<%= node[:mysql][:admin_user][:username] %>'@'%' IDENTIFIED BY '<%= node[:mysql][:admin_user][:password] %>';
