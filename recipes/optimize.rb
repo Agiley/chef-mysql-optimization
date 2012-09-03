@@ -14,7 +14,6 @@ if (node['mysql']['perform_optimization'])
     group node['mysql']['root_group'] unless platform? 'windows'
     mode "0644"
     notifies :restart, resources(:service => "mysql"), :immediately
-    variables :skip_federated => skip_federated
   end
   
 else
