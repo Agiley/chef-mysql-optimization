@@ -16,6 +16,7 @@ if (node['mysql']['perform_optimization'])
   
   bash "backup_current_data_and_log_files" do
     code <<-EOH
+      sleep 30
       for i in `find #{node['mysql']['data_dir']} -name '*.bak'`; do rm -rf $i; done
       for i in `find #{node['mysql']['data_dir']} -name 'ibdata*'`; do mv $i $i.bak; done
       for i in `find #{node['mysql']['data_dir']} -name 'ib_logfile*'`; do mv $i $i.bak; done
