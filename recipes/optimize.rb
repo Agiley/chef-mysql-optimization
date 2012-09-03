@@ -9,7 +9,7 @@ if (node['mysql']['perform_optimization'])
   end
   
   #We need to stop MySQL and then backup its datafile and logfiles before changing the innodb_log_file_size-setting. Otherwise MySQL won't start again.
-  bash 'force_stop_mysql' do
+  bash 'force_mysql_stop' do
     code "echo 'Forced stop of MySQL in order to backup data and log files.'"
     notifies :stop, resources(:service => "mysql"), :immediately
   end
@@ -44,8 +44,8 @@ if (node['mysql']['perform_optimization'])
     EOH
   end
   
-  bash 'force_start_mysql' do
-    code "echo 'Forced start of MySQL in order to pickup new config changes.'"
+  bash 'force_mysql_start' do
+    code "echo 'Forced start of MySQL in order to pick up new config changes.'"
     notifies :start, resources(:service => "mysql"), :immediately
   end
   
