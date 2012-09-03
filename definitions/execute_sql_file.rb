@@ -13,7 +13,7 @@ define :execute_sql_file, :variables => {}, :template_cookbook => "mysql-optimiz
     command "\"#{node['mysql']['mysql_bin']}\" -u root #{node['mysql']['server_root_password'].empty? ? '' : '-p' }\"#{node['mysql']['server_root_password']}\" < \"#{params[:template_path]}\""
   end
 
-  file params[:template_path]h do
+  file params[:template_path] do
     action :delete
     only_if { File.exists?(params[:template_path]) }
   end
