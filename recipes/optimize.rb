@@ -30,7 +30,12 @@ if (node['mysql']['perform_optimization'])
     owner "root" unless platform? 'windows'
     group node['mysql']['root_group'] unless platform? 'windows'
     mode "0644"
-    notifies :start, resources(:service => "mysql"), :immediately
+    #notifies :reload, resources(:service => "mysql"), :immediately
+  end
+  
+  service "mysql_force_start" do
+    service_name "mysql"
+    action :start
   end
   
 else
