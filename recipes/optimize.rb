@@ -45,7 +45,7 @@ if (node['mysql']['perform_optimization'])
   
   bash 'force_mysql_start' do
     code "echo 'Forced start of MySQL in order to pick up new config changes.'"
-    notifies :start, resources(:service => "mysql"), :delayed
+    notifies :start, resources(:service => "mysql"), :immediately
   end
   
 else
