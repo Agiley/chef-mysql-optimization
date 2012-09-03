@@ -28,11 +28,8 @@ module Mysql
                                                               
       multiples['myisam_sort_buffer_size']              =     0.0625
       multiples['myisam_max_sort_file_size']            =     0.0625
-      multiples['myisam_max_extra_sort_file_size']      =     0.0625
                                                               
       multiples['innodb_additional_mem_pool_size']      =     0.125
-      multiples['innodb_log_buffer_size']               =     0.00390625
-      multiples['innodb_log_file_size']                 =     0.125
       
       if (memory && memory > 0)
         multiples.each do |key, multiple|

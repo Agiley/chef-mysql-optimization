@@ -25,6 +25,8 @@ default['mysql']['tunable']['innodb_thread_concurrency']        =   10
 default['mysql']['tunable']['innodb_flush_method']              =   'O_DIRECT'
 default['mysql']['tunable']['innodb_file_per_table']            =   true
 default['mysql']['tunable']['innodb_log_files_in_group']        =   2
+default['mysql']['tunable']['innodb_log_buffer_size']           =   '4M'
+default['mysql']['tunable']['innodb_log_file_size']             =   '128M'
 
 #Because of file_per_table = true. See http://mysqldump.azundris.com/archives/78-Configuring-InnoDB-An-InnoDB-tutorial.html
 default['mysql']['tunable']['innodb_data_file_path']            =   'ibdata1:10M:autoextend' 
@@ -43,7 +45,6 @@ default['mysql']['tunable']['bulk_insert_buffer_size']          =   "32M"
                                                                                     
 default['mysql']['tunable']['myisam_sort_buffer_size']          =   "62M"
 default['mysql']['tunable']['myisam_max_sort_file_size']        =   "62M"
-default['mysql']['tunable']['myisam_max_extra_sort_file_size']  =   "62M"
                                                                                     
 default['mysql']['tunable']['innodb_additional_mem_pool_size']  =   "128M"
 default['mysql']['tunable']['innodb_log_buffer_size']           =   "4M"
