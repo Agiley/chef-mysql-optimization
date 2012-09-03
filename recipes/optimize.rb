@@ -16,7 +16,7 @@ if (node['mysql']['perform_optimization'])
   
   bash "remove_current_data_file_and_log_files" do
     code <<-EOH
-      sleep 30;
+      sleep 10;
       for i in `find #{node['mysql']['data_dir']} -name 'ibdata*'`; do rm -rf $i; done;
       for i in `find #{node['mysql']['data_dir']} -name 'ib_logfile*'`; do rm -rf $i; done;
     EOH
