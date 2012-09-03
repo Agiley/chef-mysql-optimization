@@ -30,8 +30,10 @@ if (node['mysql']['perform_optimization'])
     owner "root" unless platform? 'windows'
     group node['mysql']['root_group'] unless platform? 'windows'
     mode "0644"
-    notifies :start, resources(:service => "mysql"), :immediately
+    #notifies :start, resources(:service => "mysql"), :immediately
   end
+  
+  execute "sudo service mysql start"
   
 else
   ::Chef::Log.info("No additional mysql performance optimization will be performed since node['mysql']['perform_optimization'] is false.")
