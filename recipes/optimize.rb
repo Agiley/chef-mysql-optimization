@@ -14,14 +14,13 @@ if (node['mysql']['perform_optimization'])
   end
   
   bash "backup_current_data_and_log_files" do
-    backup_folder   =   "backup"
+    data_file_path  =   "#{node['mysql']['data_dir']}/ibdata1"
     
-    code "sudo mkdir -p #{node['mysql']['data_dir']}/#{backup_folder}"
-    code "if test -e #{node['mysql']['data_dir']}/ibdata1; then sudo mv #{node['mysql']['data_dir']}/ibdata1 #{node['mysql']['data_dir']}/#{backup_folder}/ibdata1; fi;"
+    code "if test -e #{data_file_path}; then sudo mv #{data_file_path} #{data_file_path}.bak; fi;"
 
     0.upto(node['mysql']['tunable']['innodb_log_files_in_group'] - 1) do |i|
       file_path     =   "#{node['mysql']['data_dir']}/ib_logfile#{i}"
-      code "if test -e #{file_path}; then sudo mv #{file_path} #{node['mysql']['data_dir']}/#{backup_folder}/ib_logfile#{i}; fi;"
+      code "if test -e #{file_path}; then sudo mv #{file_path} #{file_path}.bak; fi;"
     end
   end
   
