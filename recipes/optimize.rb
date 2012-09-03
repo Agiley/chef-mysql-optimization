@@ -16,10 +16,12 @@ if (node['mysql']['perform_optimization'])
   
   bash "backup_current_data_and_log_files" do
     data_file_path  =   "#{node['mysql']['data_dir']}/ibdata1"
+    wait_time       =   30
     
+    code "sleep #{wait_time}"
     code "if test -e #{data_file_path}; then sudo mv #{data_file_path} #{data_file_path}.bak; fi;"
 
-    0.upto(node['mysql']['tunable']['innodb_log_files_in_group'] - 1) do |i|
+    0.upto(node['mysql']['tunable']['innodb_log_files_in_group']) do |i|
       file_path     =   "#{node['mysql']['data_dir']}/ib_logfile#{i}"
       code "if test -e #{file_path}; then sudo mv #{file_path} #{file_path}.bak; fi;"
     end
