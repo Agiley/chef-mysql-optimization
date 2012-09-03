@@ -9,3 +9,5 @@ Cookbook to optimize MySQL (adding stuff that's not available in the regular mys
 Install it as a git submodule and make sure the directory for the cookbook is called mysql-optimization.
 
 E.g: git submodule add git://github.com/Agiley/chef-mysql-optimization.git cookbooks/mysql-optimization
+
+This cookbook depends on the mysql::server-cookbook.
