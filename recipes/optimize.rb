@@ -8,9 +8,9 @@ if (node['mysql']['perform_optimization'])
     node.set['mysql']['tunable'][key] = value
   end
   
-  #We need to stop MySQL and then backup its datafile and logfiles before changing the innodb_log_file_size-setting. Otherwise MySQL won't start.
-  bash 'stop_mysql' do
-    code "echo 'Stopping MySQL in order to backup data and log files.'"
+  #We need to stop MySQL and then backup its datafile and logfiles before changing the innodb_log_file_size-setting. Otherwise MySQL won't start again.
+  bash 'force_stop_mysql' do
+    code "echo 'Forced stop of MySQL in order to backup data and log files.'"
     notifies :stop, resources(:service => "mysql"), :immediately
   end
   
@@ -25,15 +25,29 @@ if (node['mysql']['perform_optimization'])
     end
   end
   
-  template "#{node['mysql']['conf_dir']}/my.cnf" do
+  #Due to template "#{node['mysql']['conf_dir']}/my.cnf" already being defined with notifies :restart, :immediately we have to use a custom template path
+  #to not trigger the :restart-action since that will fail due to Upstart not being able to restart a service that has not already been started.
+  template "#{node['mysql']['conf_dir']}/my-custom.cnf" do
     source "my.cnf.erb"
     owner "root" unless platform? 'windows'
     group node['mysql']['root_group'] unless platform? 'windows'
     mode "0644"
-    #notifies :start, resources(:service => "mysql"), :immediately
   end
   
-  execute "sudo service mysql start"
+  bash "replace_previous_my_cnf" do
+    config_file     =   "#{node['mysql']['conf_dir']}/my.cnf"
+    replacement     =   "#{node['mysql']['conf_dir']}/my-custom.cnf"
+    
+    code <<-EOH
+      if test -e #{config_file}; then sudo mv #{config_file} #{config_file}.bak; fi;
+      if test -e #{replacement}; then sudo mv #{replacement} #{config_file}; fi;
+    EOH
+  end
+  
+  bash 'force_start_mysql' do
+    code "echo 'Forced start of MySQL in order to pickup new config changes.'"
+    notifies :start, resources(:service => "mysql"), :immediately
+  end
   
 else
   ::Chef::Log.info("No additional mysql performance optimization will be performed since node['mysql']['perform_optimization'] is false.")
