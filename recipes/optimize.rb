@@ -9,9 +9,8 @@ if (node['mysql']['perform_optimization'])
   end
   
   #We need to stop MySQL and then backup its datafile and logfiles before changing the innodb_log_file_size-setting. Otherwise MySQL won't start.
-  service "mysql_custom_stop" do
-    service_name "mysql"
-    action :stop, :immediately
+  execute 'restart_mysql' do
+    notifies :stop, resources(:service => "mysql"), :immediately
   end
   
   bash "backup_current_data_and_log_files" do
