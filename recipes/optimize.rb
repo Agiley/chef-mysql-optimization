@@ -2,16 +2,15 @@ if (node['mysql']['perform_optimization'])
   ::Chef::Recipe.send(:include, Mysql::Optimization)
   ::Chef::Log.info("Will now perform additional MySQL optimization.")
   
+  optimizations     =   optimize_mysql(node['mysql']['system_type'].to_sym)
+  
   #The innodb_log_file_size-attribute needs to be set during run time, otherwise it will interfere with the original mysql::server-recipe.
   #The original recipe defaults to a value of 5M and when setting or overriding this value to a different value the ib_logfiles won't match the configured log size
   #Result: MySQL won't start.
   
   bash 'setting_mysql_attributes_at_run_time' do
     code "echo 'Setting mysql attributes at run time that could conflict with the regular mysql::server-recipe otherwise.'"
-    
     node.set['mysql']['tunable']['innodb_log_file_size'] = '128M'
-
-    optimizations     =   optimize_mysql(node['mysql']['system_type'].to_sym)
 
     optimizations.each do |key, value|
       node.set['mysql']['tunable'][key] = value
