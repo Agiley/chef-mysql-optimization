@@ -18,7 +18,7 @@ if (node['mysql']['perform_optimization'])
     data_file_path  =   "#{node['mysql']['data_dir']}/ibdata1"
     wait_time       =   30
     
-    code "sleep #{wait_time}"
+    sleep wait_time
     code "if test -e #{data_file_path}; then sudo mv #{data_file_path} #{data_file_path}.bak; fi;"
 
     0.upto(node['mysql']['tunable']['innodb_log_files_in_group']) do |i|
