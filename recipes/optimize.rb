@@ -16,13 +16,12 @@ if (node['mysql']['perform_optimization'])
   bash "backup_current_data_and_log_files" do
     backup_folder   =   "backup"
     
-    code <<-EOH
-      mkdir -p #{node['mysql']['data_dir']}/#{backup_folder}
-      mv #{node['mysql']['data_dir']}/ibdata1 #{node['mysql']['data_dir']}/#{backup_folder}/ibdata1
-    EOH
+    code "mkdir -p #{node['mysql']['data_dir']}/#{backup_folder}"
+    code "if test -e #{node['mysql']['data_dir']}/ibdata1; then mv #{node['mysql']['data_dir']}/ibdata1 #{node['mysql']['data_dir']}/#{backup_folder}/ibdata1; fi;"
 
     0.upto(node['mysql']['tunable']['innodb_log_files_in_group'] - 1) do |i|
-      code "mv #{node['mysql']['data_dir']}/ib_logfile#{i} #{node['mysql']['data_dir']}/#{backup_folder}/ib_logfile#{i}"
+      file_path     =   "#{node['mysql']['data_dir']}/ib_logfile#{i}"
+      code "if test -e #{file_path}; then mv #{file_path} #{node['mysql']['data_dir']}/#{backup_folder}/ib_logfile#{i}; fi;"
     end
   end
   
@@ -31,7 +30,7 @@ if (node['mysql']['perform_optimization'])
     owner "root" unless platform? 'windows'
     group node['mysql']['root_group'] unless platform? 'windows'
     mode "0644"
-    notifies :start, resources(:service => "mysql"), :immediately
+    notifies :start, resources(:service => "mysql"), :delayed
   end
   
 else
