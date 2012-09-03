@@ -12,6 +12,10 @@ default['mysql']['admin_user']                                  =   {
 
 default['mysql']['tunable']['default-storage-engine']           =   'innodb'
 
+default['mysql']['tunable']['connect_timeout']                  =   10
+default['mysql']['tunable']['interactive_timeout']              =   180
+#wait_timeout is defined in the original MySQL cookbook
+
 default['mysql']['tunable']['enable_binary_logging']            =   false
 default['mysql']['tunable']['server-id']                        =   1
 default['mysql']['tunable']['log_bin']                          =   '/var/log/mysql/mysql-bin.log'
