@@ -14,12 +14,11 @@ if (node['mysql']['perform_optimization'])
     notifies :stop, resources(:service => "mysql"), :immediately
   end
   
-  bash "backup_current_data_and_log_files" do
+  bash "remove_current_data_file_and_log_files" do
     code <<-EOH
       sleep 30;
-      for i in `find #{node['mysql']['data_dir']} -name '*.bak'`; do rm -rf $i; done;
-      for i in `find #{node['mysql']['data_dir']} -name 'ibdata*'`; do mv $i $i.bak; done;
-      for i in `find #{node['mysql']['data_dir']} -name 'ib_logfile*'`; do mv $i $i.bak; done;
+      for i in `find #{node['mysql']['data_dir']} -name 'ibdata*'`; do rm -rf $i; done;
+      for i in `find #{node['mysql']['data_dir']} -name 'ib_logfile*'`; do rm -rf $i; done;
     EOH
   end
   
@@ -42,12 +41,13 @@ if (node['mysql']['perform_optimization'])
     EOH
   end
   
-  execute "service mysql start"
+  #execute "service mysql start"
   
-  #bash 'force_mysql_start' do
-  #  code "echo 'Forced start of MySQL in order to pick up new config changes.'"
-  #  notifies :start, resources(:service => "mysql"), :immediately
-  #end
+  bash 'force_mysql_start' do
+    action :nothing
+    code "echo 'Forced start of MySQL in order to pick up new config changes.'"
+    notifies :start, resources(:service => "mysql"), :delayed
+  end
   
 else
   ::Chef::Log.info("No additional mysql performance optimization will be performed since node['mysql']['perform_optimization'] is false.")
