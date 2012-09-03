@@ -26,6 +26,21 @@ default['mysql']['tunable']['innodb_log_files_in_group']        =   2
 default['mysql']['tunable']['innodb_data_file_path']            =   'ibdata1:10M:autoextend' 
 default['mysql']['tunable']['innodb_autoextend_increment']      =   8
 
-#Additional optimization settings (calculated based on the server's actual memory capacity) will be set using the optimize_mysql method.
-
-
+#For a 1024mb memory VPS
+default['mysql']['tunable']['query_cache_size']                 =   "256M"
+default['mysql']['tunable']['query_cache_limit']                =   "128M"
+default['mysql']['tunable']['tmp_table_size']                   =   "128M"
+default['mysql']['tunable']['key_buffer_size']                  =   "32M"
+default['mysql']['tunable']['read_buffer_size']                 =   "62M"
+default['mysql']['tunable']['read_rnd_buffer_size']             =   "62M"
+default['mysql']['tunable']['sort_buffer_size']                 =   "32M"
+default['mysql']['tunable']['join_buffer_size']                 =   "32M"
+default['mysql']['tunable']['bulk_insert_buffer_size']          =   "32M"
+                                                                                    
+default['mysql']['tunable']['myisam_sort_buffer_size']          =   "62M"
+default['mysql']['tunable']['myisam_max_sort_file_size']        =   "62M"
+default['mysql']['tunable']['myisam_max_extra_sort_file_size']  =   "62M"
+                                                                                    
+default['mysql']['tunable']['innodb_additional_mem_pool_size']  =   "128M"
+default['mysql']['tunable']['innodb_log_buffer_size']           =   "4M"
+default['mysql']['tunable']['innodb_log_file_size']             =   "128M"
