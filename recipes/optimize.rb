@@ -2,7 +2,7 @@ if (node['mysql']['perform_optimization'])
   ::Chef::Recipe.send(:include, Mysql::Optimization)
   ::Chef::Log.info("Will now perform additional MySQL optimization.")
   
-  optimizations = optimize_mysql(node['mysql']['system_type'].to_sym)
+  optimizations     =   optimize_mysql(node['mysql']['system_type'].to_sym)
   
   optimizations.each do |key, value|
     node.set['mysql']['tunable'][key] = value
@@ -14,15 +14,15 @@ if (node['mysql']['perform_optimization'])
   end
   
   bash "backup_current_data_and_log_files" do
-    innodb_log_files_in_group = node['mysql']['tunable']['innodb_log_files_in_group'] || 2
+    backup_folder   =   "backup"
     
     code <<-EOH
-      mkdir -p #{node['mysql']['data_dir']}/backup
-      mv #{node['mysql']['data_dir']}/ibdata1 #{node['mysql']['data_dir']}/backup/ibdata1
+      mkdir -p #{node['mysql']['data_dir']}/#{backup_folder}
+      mv #{node['mysql']['data_dir']}/ibdata1 #{node['mysql']['data_dir']}/#{backup_folder}/ibdata1
     EOH
 
-    0.upto(innodb_log_files_in_group - 1) do |i|
-      code "mv #{node['mysql']['data_dir']}/ib_logfile#{i} #{node['mysql']['data_dir']}/backup/ib_logfile#{i}"
+    0.upto(node['mysql']['tunable']['innodb_log_files_in_group'] - 1) do |i|
+      code "mv #{node['mysql']['data_dir']}/ib_logfile#{i} #{node['mysql']['data_dir']}/#{backup_folder}/ib_logfile#{i}"
     end
   end
   
