@@ -6,5 +6,5 @@ version          "0.1"
 
 attribute 'mysql/admin_user', 
   :description  =>  'A hash containing a username and a password for a admin user (with remote connectivity enabled) that should be created.',
-  :type         =>  'hash'
+  :type         =>  'hash',
   :required     =>  "recommended"
