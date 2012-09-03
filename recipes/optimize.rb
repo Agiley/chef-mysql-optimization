@@ -15,16 +15,11 @@ if (node['mysql']['perform_optimization'])
   end
   
   bash "backup_current_data_and_log_files" do
-    data_file_path  =   "#{node['mysql']['data_dir']}/ibdata1"
-    wait_time       =   30
-    
-    sleep wait_time
-    code "if test -e #{data_file_path}; then sudo mv #{data_file_path} #{data_file_path}.bak; fi;"
-
-    0.upto(node['mysql']['tunable']['innodb_log_files_in_group']) do |i|
-      file_path     =   "#{node['mysql']['data_dir']}/ib_logfile#{i}"
-      code "if test -e #{file_path}; then sudo mv #{file_path} #{file_path}.bak; fi;"
-    end
+    code <<-EOH
+      for i in `find #{node['mysql']['data_dir']} -name '*.bak'`; do rm -rf $i; done
+      for i in `find #{node['mysql']['data_dir']} -name 'ibdata*'`; do mv $i $i.bak; done
+      for i in `find #{node['mysql']['data_dir']} -name 'ib_logfile*'`; do mv $i $i.bak; done
+    EOH
   end
   
   #Due to template "#{node['mysql']['conf_dir']}/my.cnf" already being defined with notifies :restart, :immediately we have to use a custom template path
@@ -41,8 +36,8 @@ if (node['mysql']['perform_optimization'])
     replacement     =   "#{node['mysql']['conf_dir']}/my-custom.cnf"
     
     code <<-EOH
-      if test -e #{config_file}; then sudo mv #{config_file} #{config_file}.bak; fi;
-      if test -e #{replacement}; then sudo mv #{replacement} #{config_file}; fi;
+      if test -e #{config_file}; then mv #{config_file} #{config_file}.bak; fi;
+      if test -e #{replacement}; then mv #{replacement} #{config_file}; fi;
     EOH
   end
   
