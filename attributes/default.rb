@@ -4,7 +4,7 @@
 default['mysql']['system_type']                             =   :shared
 
 default['mysql']['perform_optimization']                    =   true
-default['mysql']['optimize_based_on_system_memory']         =   true
+default['mysql']['optimization_based_on_system_memory']     =   true
 
 default['mysql']['admin_user']                              =   {
   'username'    =>  nil,
