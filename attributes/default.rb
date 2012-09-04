@@ -24,6 +24,9 @@ set['mysql']['tunable']['innodb_buffer_pool_size']          =   "128M"
 set['mysql']['tunable']['innodb_additional_mem_pool_size']  =   "128M"
 set['mysql']['tunable']['innodb_log_files_in_group']        =   2
 
+set['mysql']['tunable']['innodb_log_buffer_size']           =   '8M'
+set['mysql']['tunable']['innodb_log_file_size']             =   '128M'
+
 #Because of file_per_table = true. See http://mysqldump.azundris.com/archives/78-Configuring-InnoDB-An-InnoDB-tutorial.html
 set['mysql']['tunable']['innodb_data_file_path']            =   'ibdata1:10M:autoextend' 
 set['mysql']['tunable']['innodb_autoextend_increment']      =   8
