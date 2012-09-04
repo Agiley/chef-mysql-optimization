@@ -1,13 +1,16 @@
 if (node['mysql']['perform_optimization'])
-  ::Chef::Recipe.send(:include, Mysql::Optimization)
   ::Chef::Log.info("Will now perform additional MySQL optimization.")
   
-  optimizations     =   optimize_mysql(node['mysql']['system_type'].to_sym)
-  
-  optimizations.each do |key, value|
-    node.set['mysql']['tunable'][key] = value
+  if (node['mysql']['optimize_based_on_system_memory'])
+    ::Chef::Recipe.send(:include, Mysql::Optimization)
+    
+    optimizations     =   optimize_mysql(node['mysql']['system_type'].to_sym)
+
+    optimizations.each do |key, value|
+      node.set['mysql']['tunable'][key] = value
+    end
   end
-  
+
   #We need to stop MySQL and then backup its datafile and logfiles before changing the innodb_log_file_size-setting. Otherwise MySQL won't start again.
   bash 'force_mysql_stop' do
     code "echo 'Forced stop of MySQL in order to backup data and log files.'"
