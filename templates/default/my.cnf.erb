@@ -156,7 +156,6 @@ innodb_autoextend_increment     =   <%= node['mysql']['tunable']['innodb_autoext
 
 innodb_flush_log_at_trx_commit  =   <%= node['mysql']['tunable']['innodb_flush_log_at_trx_commit'] %>
 innodb_thread_concurrency       =   <%= node['mysql']['tunable']['innodb_thread_concurrency'] %>
-innodb_flush_method             =   <%= node['mysql']['tunable']['innodb_flush_method'] %>
 innodb_log_files_in_group       =   <%= node['mysql']['tunable']['innodb_log_files_in_group'] %>
 
 <%- if node['mysql']['tunable']['innodb_flush_method'] %>
