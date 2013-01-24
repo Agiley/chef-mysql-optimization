@@ -2,7 +2,7 @@ if (node['mysql']['perform_optimization'])
   ::Chef::Log.info("Will now perform additional MySQL optimization.")
   
   if (node['mysql']['optimization_based_on_system_memory'])
-    ::Chef::Recipe.send(:include, Mysql::Optimization)
+    ::Chef::Recipe.send(:include, ChefMysqlOptimization::Mysql::Optimization)
     
     optimizations     =   optimize_mysql(node['mysql']['system_type'].to_sym)
 
