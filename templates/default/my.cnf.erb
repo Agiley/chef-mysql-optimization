@@ -51,6 +51,13 @@ basedir         = <%= node['mysql']['basedir'] %>
 datadir         = <%= node['mysql']['data_dir'] %>
 tmpdir          = /tmp
 skip-external-locking
+
+# * Encoding Settings
+character-set-server    = <%= node['mysql']['tunable']['character_set_server'] %>
+collation-server        = <%= node['mysql']['tunable']['collation_server'] %>
+init-connect            = '<%= node['mysql']['tunable']['init_connect'] %>'
+#
+
 #
 # Instead of skip-networking the default is now to listen only on
 # localhost which is more compatible and is not less secure.

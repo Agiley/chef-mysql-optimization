@@ -13,6 +13,10 @@ default['mysql']['admin_user']                              =   {
 
 set['mysql']['tunable']['default-storage-engine']           =   'innodb'
 
+set['mysql']['tunable']['character_set_server']             =   'utf8'
+set['mysql']['tunable']['collation_server']                 =   'utf8_unicode_ci'
+set['mysql']['tunable']['init_connect']                     =   'SET NAMES utf8'
+
 set['mysql']['tunable']['connect_timeout']                  =   10
 set['mysql']['tunable']['wait_timeout']                     =   180
 set['mysql']['tunable']['interactive_timeout']              =   180
