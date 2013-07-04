@@ -17,11 +17,12 @@ if (node['mysql']['perform_optimization'])
     notifies :stop, resources(:service => "mysql"), :immediately
   end
   
-  bash "remove_current_data_file_and_log_files" do
+  bash "backup_current_data_file_and_log_files" do
     code <<-EOH
       sleep 10;
-      for i in `find #{node['mysql']['data_dir']} -name 'ibdata*'`; do rm -rf $i; done;
-      for i in `find #{node['mysql']['data_dir']} -name 'ib_logfile*'`; do rm -rf $i; done;
+      TMPDIR="/tmp/ibdata-`date +%Y%m%d%H%M%S`"
+      for i in `find #{node['mysql']['data_dir']} -name 'ibdata*'`; do mv $i ${TMPDIR}; done;
+      for i in `find #{node['mysql']['data_dir']} -name 'ib_logfile*'`; do do mv $i ${TMPDIR}; done;
     EOH
   end
   
