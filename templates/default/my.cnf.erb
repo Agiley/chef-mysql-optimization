@@ -165,6 +165,10 @@ innodb_flush_log_at_trx_commit  =   <%= node['mysql']['tunable']['innodb_flush_l
 innodb_thread_concurrency       =   <%= node['mysql']['tunable']['innodb_thread_concurrency'] %>
 innodb_log_files_in_group       =   <%= node['mysql']['tunable']['innodb_log_files_in_group'] %>
 
+<%- if node['mysql']['tunable']['innodb_lock_wait_timeout'] %>
+innodb_lock_wait_timeout        =   <%= node['mysql']['tunable']['innodb_lock_wait_timeout'] %>
+<%- end %>
+
 <%- if node['mysql']['tunable']['innodb_flush_method'] %>
 innodb_flush_method             =   <%= node['mysql']['tunable']['innodb_flush_method'] %>
 <%- end %>
