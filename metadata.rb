@@ -8,3 +8,12 @@ attribute 'mysql/admin_user',
   :description  =>  'A hash containing a username and a password for a admin user (with remote connectivity enabled) that should be created.',
   :type         =>  'hash',
   :required     =>  "recommended"
+
+
+%w{ ubuntu debian }.each do |os|
+  supports os
+end
+
+%w{ mysql }.each do |cb|
+  depends cb
+end
