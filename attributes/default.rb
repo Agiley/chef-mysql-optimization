@@ -1,3 +1,7 @@
+#Load default mysql attributes
+include_attribute "mysql"
+include_attribute "mysql::server"
+
 #The type of system
 # - :dedicated for a system where only MySQL is running
 # - :shared for a system where MySQL is running alongside other components (e.g. Nginx, Memcache and so on)
