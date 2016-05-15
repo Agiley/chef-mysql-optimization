@@ -14,7 +14,7 @@ if (node['mysql']['perform_optimization'])
   # We need to drop innodb tablespace tables when deleting the ibdata/ib_logfile-files.
   # These tables will later be re-created
   # For more info, see: http://dba.stackexchange.com/questions/54608/innodb-error-table-mysql-innodb-table-stats-not-found-after-upgrade-to-mys
-  if node['mysql']['version'].version.to_f >= 5.7
+  if node['mysql']['version'].to_f >= 5.7
     execute_sql_file do
       template_path     '/tmp/drop_innodb_tablespace_tables.sql'
       template_source   'drop_innodb_tablespace_tables.sql.erb'
@@ -22,7 +22,7 @@ if (node['mysql']['perform_optimization'])
   end
   
   # We also need to remove the actual .idb and .frm-files from disk for these tables
-  if node['mysql']['version'].version.to_f >= 5.7
+  if node['mysql']['version'].to_f >= 5.7
     node['mysql']['tunable']['innodb_tablespace_tables'].each do |table|
       paths     =   ["#{node['mysql']['data_dir']}/mysql/#{table}.ibd", "#{node['mysql']['data_dir']}/mysql/#{table}.frm"]
       
@@ -70,7 +70,7 @@ if (node['mysql']['perform_optimization'])
   #notifies :restart, resources(:service => "mysql"), :immediately
   execute "service mysql start"
   
-  if node['mysql']['version'].version.to_f >= 5.7
+  if node['mysql']['version'].to_f >= 5.7
     execute_sql_file do
       template_path     '/tmp/create_innodb_tablespace_tables.sql'
       template_source   'create_innodb_tablespace_tables.sql'
