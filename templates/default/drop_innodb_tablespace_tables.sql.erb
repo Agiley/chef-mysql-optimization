@@ -1,0 +1,5 @@
+USE mysql;
+
+<% node['mysql']['tunable']['innodb_tablespace_tables'].each do |table| %>
+DROP DATABASE IF EXISTS `<%= table %>`;
+<% end if node['mysql']['tunable']['innodb_tablespace_tables'] && node['mysql']['tunable']['innodb_tablespace_tables'].any? %>

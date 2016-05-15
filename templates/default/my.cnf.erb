@@ -65,21 +65,34 @@ bind-address            = <%= node['mysql']['bind_address'] %>
 #
 # * Fine Tuning
 #
-key_buffer              = <%= node['mysql']['tunable']['key_buffer'] %>
-max_allowed_packet      = <%= node['mysql']['tunable']['max_allowed_packet'] %>
-thread_stack            = <%= node['mysql']['tunable']['thread_stack'] %>
-thread_cache_size       = <%= node['mysql']['tunable']['thread_cache_size'] %>
-thread_concurrency      = <%= node['mysql']['tunable']['thread_concurrency'] %>
-
-auto-increment-increment = <%= node['mysql']['auto-increment-increment'] %>
-auto-increment-offset    = <%= node['mysql']['auto-increment-offset'] %>
+<% if node['mysql']['version'].version.to_f >= 5.7 %>
+key_buffer_size           = <%= node['mysql']['tunable']['key_buffer'] %>
+<% else %>
+key_buffer                = <%= node['mysql']['tunable']['key_buffer'] %>
+<% end %>
+max_allowed_packet        = <%= node['mysql']['tunable']['max_allowed_packet'] %>
+thread_stack              = <%= node['mysql']['tunable']['thread_stack'] %>
+thread_cache_size         = <%= node['mysql']['tunable']['thread_cache_size'] %>
+<% if node['mysql']['version'].version.to_f < 5.7 %>
+thread_concurrency        = <%= node['mysql']['tunable']['thread_concurrency'] %>
+<% end %>
+auto-increment-increment  = <%= node['mysql']['auto-increment-increment'] %>
+auto-increment-offset     = <%= node['mysql']['auto-increment-offset'] %>
 
 # This replaces the startup script and checks MyISAM tables if needed
 # the first time they are touched
+<% if node['mysql']['version'].version.to_f < 5.7 %>
 myisam-recover          = <%= node['mysql']['tunable']['myisam_recover'] %>
+<% end %>
 max_connections         = <%= node['mysql']['tunable']['max_connections'] %>
 back_log                = <%= node['mysql']['tunable']['back_log'] %>
+
+<% if node['mysql']['version'].version.to_f >= 5.7 %>
+table_open_cache        = <%= node['mysql']['tunable']['table_cache'] %>
+<% else %>
 table_cache             = <%= node['mysql']['tunable']['table_cache'] %>
+<% end %>
+
 max_heap_table_size     = <%= node['mysql']['tunable']['max_heap_table_size'] %>
 
 # Timeouts
@@ -110,11 +123,15 @@ log-error = <%= node['mysql']['tunable']['log_error'] %>
 
 #
 # Here you can see queries with especially long duration
-log_slow_queries        = <%= node['mysql']['tunable']['log_slow_queries'] %>
-long_query_time         = <%= node['mysql']['tunable']['long_query_time'] %>
-<%- if node['mysql']['tunable']['log_queries_not_using_index'] %>
-log-queries-not-using-indexes
-<%- end %>
+
+<% if node['mysql']['version'].version.to_f >= 5.7 %>
+slow_query_log                = <%= node['mysql']['tunable']['slow_query_log'] %>
+slow_query_log_file           = <%= node['mysql']['tunable']['slow_query_log_file'] %>
+<% else %>
+log_slow_queries              = <%= node['mysql']['tunable']['slow_query_log_file'] %>
+<% end %>
+long_query_time               = <%= node['mysql']['tunable']['long_query_time'] %>
+log_queries_not_using_indexes = <%= node['mysql']['tunable']['log_queries_not_using_index'] %>
 
 #
 # The following can be used as easy to replay backup logs or for replication.
@@ -152,7 +169,9 @@ skip_slave_start
 default-storage-engine          =   <%= node['mysql']['tunable']['default-storage-engine'] %>
 
 innodb_buffer_pool_size         =   <%= node['mysql']['tunable']['innodb_buffer_pool_size'] %>
+<% if node['mysql']['version'].version.to_f < 5.7 %>
 innodb_additional_mem_pool_size =   <%= node['mysql']['tunable']['innodb_additional_mem_pool_size'] %>
+<% end %>
 innodb_log_file_size            =   <%= node['mysql']['tunable']['innodb_log_file_size'] %>
 innodb_log_buffer_size          =   <%= node['mysql']['tunable']['innodb_log_buffer_size'] %>
 

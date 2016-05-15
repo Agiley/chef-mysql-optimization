@@ -25,6 +25,7 @@ when "debian"
   default['mysql']['root_group']              = "root"
   default['mysql']['mysqladmin_bin']          = "/usr/bin/mysqladmin"
   default['mysql']['mysql_bin']               = "/usr/bin/mysql"
+  default['mysql']['mysql_upgrade_bin']       = "/usr/bin/mysql_upgrade"
 
   default['mysql']['conf_dir']                    = '/etc/mysql'
   default['mysql']['confd_dir']                   = '/etc/mysql/conf.d'
@@ -46,6 +47,7 @@ when "rhel", "fedora", "suse"
   default['mysql']['root_group']              = "root"
   default['mysql']['mysqladmin_bin']          = "/usr/bin/mysqladmin"
   default['mysql']['mysql_bin']               = "/usr/bin/mysql"
+  default['mysql']['mysql_upgrade_bin']       = "/usr/bin/mysql_upgrade"
 
   default['mysql']['conf_dir']                    = '/etc'
   default['mysql']['confd_dir']                   = '/etc/mysql/conf.d'
@@ -101,6 +103,7 @@ else
   default['mysql']['root_group']              = "root"
   default['mysql']['mysqladmin_bin']          = "/usr/bin/mysqladmin"
   default['mysql']['mysql_bin']               = "/usr/bin/mysql"
+  default['mysql']['mysql_upgrade_bin']       = "/usr/bin/mysql_upgrade"
 
   default['mysql']['conf_dir']                    = '/etc/mysql'
   default['mysql']['confd_dir']                   = '/etc/mysql/conf.d'
@@ -176,8 +179,17 @@ default['mysql']['tunable']['read_only']                            =   false
 
 default['mysql']['tunable']['log_error']                            =   nil
 default['mysql']['tunable']['log_warnings']                         =   false
-default['mysql']['tunable']['log_queries_not_using_index']          =   true
+default['mysql']['tunable']['log_queries_not_using_index']          =   1
 default['mysql']['tunable']['log_bin_trust_function_creators']      =   false
+
+# This will be used to drop and re-create the InnoDB Table Space when modifying log file size etc.
+default['mysql']['tunable']['innodb_tablespace_tables']             =   %w{
+  innodb_index_stats
+  innodb_table_stats
+  slave_master_info
+  slave_relay_log_info
+  slave_worker_info
+}
 
 default['mysql']['tunable']['innodb_log_file_size']                 =   "128M"
 default['mysql']['tunable']['innodb_buffer_pool_size']              =   "128M"
@@ -210,10 +222,9 @@ default['mysql']['tunable']['transaction-isolation']                =   nil
 default['mysql']['tunable']['query_cache_limit']                    =   "128M"
 default['mysql']['tunable']['query_cache_size']                     =   "256M"
 
-default['mysql']['tunable']['log_slow_queries']                     =   "/var/log/mysql/slow.log"
-default['mysql']['tunable']['slow_query_log']                       =   node['mysql']['tunable']['log_slow_queries'] # log_slow_queries is deprecated
-                                                                                                   # in favor of slow_query_log
-default['mysql']['tunable']['long_query_time']                      =   2
+default['mysql']['tunable']['slow_query_log']                       =   1
+default['mysql']['tunable']['slow_query_log_file']                  =   "/var/log/mysql/slow.log"
+default['mysql']['tunable']['long_query_time']                      =   10
 
 default['mysql']['tunable']['expire_logs_days']                     =   10
 default['mysql']['tunable']['max_binlog_size']                      =   "100M"
