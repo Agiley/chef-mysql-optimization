@@ -127,8 +127,6 @@ default['mysql']['auto-increment-increment']        = 1
 default['mysql']['auto-increment-offset']           = 1
 
 default['mysql']['allow_remote_root']               = false
-default['mysql']['tunable']['character-set-server'] = "utf8"
-default['mysql']['tunable']['collation-server']     = "utf8_general_ci"
 default['mysql']['tunable']['back_log']             = "128"
 default['mysql']['tunable']['key_buffer']           = "256M"
 default['mysql']['tunable']['myisam_sort_buffer_size']   = "8M"
@@ -248,9 +246,9 @@ end
 
 default['mysql']['tunable']['default-storage-engine']               =   'innodb'
 
-default['mysql']['tunable']['character_set_server']                 =   'utf8'
-default['mysql']['tunable']['collation_server']                     =   'utf8_unicode_ci'
-default['mysql']['tunable']['init_connect']                         =   'SET NAMES utf8'
+default['mysql']['tunable']['character_set_server']                 =   'utf8mb4'
+default['mysql']['tunable']['collation_server']                     =   'utf8mb4_unicode_ci'
+default['mysql']['tunable']['init_connect']                         =   'SET NAMES utf8mb4'
 
 default['mysql']['tunable']['interactive_timeout']                  =   180
 
