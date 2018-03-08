@@ -1,4 +1,4 @@
-name             "MySQL Optimization"
+name             "mysql-optimization"
 maintainer       "Sebastian Johnsson"
 maintainer_email "sebastian@agiley.se"
 license          "MIT"
