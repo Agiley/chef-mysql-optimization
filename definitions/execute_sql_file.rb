@@ -4,8 +4,8 @@ define :execute_sql_file, :variables => {}, :template_cookbook => "mysql-optimiz
     cookbook params[:template_cookbook]
     variables params[:variables]
     owner "root"
-    group node['mysql']['root_group']
-    mode "0600"
+    group "root"
+    mode "0755"
     action :create
   end
 

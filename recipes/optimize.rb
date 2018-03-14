@@ -53,8 +53,8 @@ if (node['mysql']['perform_optimization'])
   template "#{node['mysql']['conf_dir']}/my-custom.cnf" do
     source "my.cnf.erb"
     owner "root"
-    group node['mysql']['root_group']
-    mode "0644"
+    group "root"
+    mode "0755"
   end
   
   bash "replace_previous_my_cnf" do
