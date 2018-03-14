@@ -15,7 +15,7 @@ define :execute_sql_file, :variables => {}, :template_cookbook => "mysql-optimiz
     parameters +=   " -u root"
     parameters +=   " -p\"#{node[:mysql][:server_root_password]}\"" unless node[:mysql][:server_root_password].empty?
     
-    command "\"#{node[:mysql][:binary][:path]}\"#{parameters} < \"#{params[:template_path]}\""
+    command "#{node[:mysql][:binary][:path]}#{parameters} < \"#{params[:template_path]}\""
   end
 
   file params[:template_path] do
