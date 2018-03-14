@@ -13,7 +13,7 @@ define :execute_sql_file, :variables => {}, :template_cookbook => "mysql-optimiz
     parameters  =   ""
     parameters +=   " #{node[:mysql][:binary][:arguments]}" unless node[:mysql][:binary][:arguments].empty?
     parameters +=   " -u root"
-    parameters +=   " -p \"#{node[:mysql][:server_root_password]}\"" unless node[:mysql][:server_root_password].empty?
+    parameters +=   " -p\"#{node[:mysql][:server_root_password]}\"" unless node[:mysql][:server_root_password].empty?
     
     command "\"#{node[:mysql][:binary][:path]}\"#{parameters} < \"#{params[:template_path]}\""
   end
