@@ -46,14 +46,14 @@ if (node['mysql']['perform_optimization'])
   end
 
   #We need to stop MySQL and then remove its datafile and logfiles before changing the innodb_log_file_size-setting. Otherwise MySQL won't start again. 
-  execute "service mysql stop"
+  execute "service #{node[:mysql][:service_identifier]} stop"
   
   #Due to template "#{node['mysql']['conf_dir']}/my.cnf" already being defined with notifies :restart, :immediately we have to use a custom template path
   #to not trigger the :restart-action since that will fail due to Upstart not being able to restart a service that has not already been started.
   template "#{node['mysql']['conf_dir']}/my-custom.cnf" do
     source "my.cnf.erb"
-    owner "root" unless platform? 'windows'
-    group node['mysql']['root_group'] unless platform? 'windows'
+    owner "root"
+    group node['mysql']['root_group']
     mode "0644"
   end
   
@@ -67,8 +67,7 @@ if (node['mysql']['perform_optimization'])
     EOH
   end
   
-  #notifies :restart, resources(:service => "mysql"), :immediately
-  execute "service mysql start"
+  execute "service #{node[:mysql][:service_identifier]} start"
   
   if node['mysql']['version'].to_f >= 5.7
     execute_sql_file do
@@ -77,7 +76,7 @@ if (node['mysql']['perform_optimization'])
     end
   end
   
-  execute "service mysql restart"
+  execute "service #{node[:mysql][:service_identifier]} restart"
   
 else
   ::Chef::Log.info("No additional mysql performance optimization will be performed since node['mysql']['perform_optimization'] is false.")

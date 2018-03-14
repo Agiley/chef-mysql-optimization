@@ -2,10 +2,6 @@ module ChefMysqlOptimization
   module Mysql
     module Optimization
       
-      def binary_path_with_args(binary = 'mysql_bin')
-        "#{node['mysql'][binary]} -u root #{node['mysql']['server_root_password'].empty? ? '' : '-p' }\"#{node['mysql']['server_root_password']}\""
-      end
-      
       #Based on:
       # - http://www.mysqlperformanceblog.com/2007/11/01/innodb-performance-optimization-basics/
       # - http://www.activo.com/why-optimizing-innodb-is-key-for-magento-performance

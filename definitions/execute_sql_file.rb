@@ -10,7 +10,12 @@ define :execute_sql_file, :variables => {}, :template_cookbook => "mysql-optimiz
   end
 
   execute "execute_sql_script" do
-    command "\"#{node['mysql']['mysql_bin']}\" -u root #{node['mysql']['server_root_password'].empty? ? '' : '-p' }\"#{node['mysql']['server_root_password']}\" < \"#{params[:template_path]}\""
+    parameters  =   ""
+    parameters +=   " #{node[:mysql][:binary][:arguments]}" unless node[:mysql][:binary][:arguments].empty?
+    parameters +=   " -u root"
+    parameters +=   " -p \"#{node[:mysql][:server_root_password]}\"" unless node[:mysql][:server_root_password].empty?
+    
+    command "\"#{node[:mysql][:mysql_bin]}\"#{parameters} < \"#{params[:template_path]}\""
   end
 
   file params[:template_path] do
