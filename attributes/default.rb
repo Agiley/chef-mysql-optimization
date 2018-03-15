@@ -12,7 +12,7 @@ default['mysql']['admin_user']                              =   {
 }
 
 # Included from original server attributes for mysql cookbook
-default['mysql']['bind_address']               = (node.attribute?('cloud') && node['cloud']['local_ipv4']) ? node['cloud']['local_ipv4'] : node['ipaddress']
+default['mysql']['bind_address']               = node['ipaddress'] #(node.attribute?('cloud') && node['cloud']['local_ipv4']) ? node['cloud']['local_ipv4'] : node['ipaddress']
 default['mysql']['port']                       = '3306'
 default['mysql']['nice']                       = 0
 
