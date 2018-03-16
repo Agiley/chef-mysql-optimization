@@ -7,7 +7,7 @@ if (node['mysql']['perform_optimization'])
     optimizations     =   optimize_mysql(node['mysql']['system_type'].to_sym)
 
     optimizations.each do |key, value|
-      node.override['mysql']['tunable'][key] = value
+      node.default['mysql']['tunable'][key] = value
     end
   end
   
